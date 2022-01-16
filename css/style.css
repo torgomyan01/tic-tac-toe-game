@@ -1,0 +1,66 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    outline: none;
+    box-sizing: border-box;
+}
+:root {
+    --c-border: #4caf50;
+    --border: 2px solid var(--c-border);
+}
+
+.game-body{
+    width: 500px;
+    height: 500px;
+    margin: 50px auto;
+}
+.game-row{
+    width: 100%;
+    height: calc(100% / 3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.game-row .game-row-col:nth-of-type(1){
+    border-right: var(--border);
+    border-bottom: var(--border);
+}
+.game-row .game-row-col:nth-of-type(2){
+    border-right: var(--border);
+    border-bottom: var(--border);
+}
+.game-row .game-row-col:nth-of-type(3){
+    border-bottom: var(--border);
+}
+.game-row:nth-of-type(3) .game-row-col{
+    border-bottom: 0;
+}
+.game-row-col{
+    width: calc(100% / 3);
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 90px;
+    font-family: "Segoe Script", serif;
+    color: var(--c-border);
+}
+.game-row-col:hover{
+    background: #edecec;
+}
+
+.body-player{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.block-total-player{
+    font-size: 39px;
+    margin: 20px 15px;
+    font-family: Candara, serif;
+    color: var(--c-border);
+}
