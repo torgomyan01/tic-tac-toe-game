@@ -1,4 +1,4 @@
-const {GameRowCol, div, gameBody: gameBody1, gameRow, key, keyCol, x, o, noVictory} = {
+const {GameRowCol, div, gameBody: gameBody1, gameRow, key, keyCol, x, o, noVictory, playGameID, input} = {
     gameBody: 'game-body',
     gameRow: 'game-row',
     GameRowCol: 'game-row-col',
@@ -7,8 +7,92 @@ const {GameRowCol, div, gameBody: gameBody1, gameRow, key, keyCol, x, o, noVicto
     div: 'div',
     o: 'o',
     x: 'x',
-    noVictory: 'noVictory'
+    noVictory: 'noVictory',
+    playGameID: 'play-game',
+    input: '.for-row-col input'
 }
+
+
+const playGame = document.getElementById(playGameID);
+
+playGame.addEventListener('submit', function (e){
+    e.preventDefault();
+    const input = document.querySelector(input);
+    console.log(input)
+})
+
+
+
+const matrix = [];
+const rowCol = 5;
+for(let i = 0; i < rowCol; i++){
+    matrix.push([]);
+    for(let j = 0; j < rowCol; j++){
+        matrix[i].push('');
+    }
+}
+
+const vic = [];
+
+
+matrix.forEach((row, index) => {
+    const _vic = [];
+    row.forEach((col, colIndex) => {
+        _vic.push([index, colIndex]);
+    })
+    vic.push(_vic);
+})
+
+matrix.forEach((row, index) => {
+    const verticalVic = [];
+    matrix.forEach((row2, index2) => {
+        verticalVic.push([index2, index]);
+    })
+    vic.push(verticalVic);
+})
+
+//     ['', '', '', ''],
+//     ['', '', '', ''],
+//     ['', '', '', ''],
+//     ['', '', '', ''],
+
+const _vtLeftToRight = [];
+matrix.forEach((row, index) => {
+    _vtLeftToRight.push([index, index]);
+})
+vic.push(_vtLeftToRight);
+
+
+
+let count = rowCol - 1;
+const _vtRightToLeft = [];
+matrix.forEach((row, index) => {
+    _vtRightToLeft.push([index, count]);
+    count--;
+})
+vic.push(_vtRightToLeft);
+
+
+console.log(vic)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const gameBody = document.getElementsByClassName(gameBody1);
 
 let Matrix = [
@@ -76,8 +160,8 @@ function startGame() {
     gameRowCol.forEach((col) => {
         col.addEventListener('click', (e) => {
             if (!gaming) return;
-            const parentIndex = Number(e.target.parentNode.id.replace(key, ''));
-            const thisIndex = Number(e.target.id.replace(keyCol, ''));
+            const parentIndex = +e.target.parentNode.id.replace(key, '');
+            const thisIndex = +e.target.id.replace(keyCol, '');
             if (Matrix[parentIndex][thisIndex] !== '') return;
 
             Matrix[parentIndex][thisIndex] = x;
@@ -116,9 +200,22 @@ function startGame() {
                 const topRating = maxStatusRating.find((TopRt) => TopRt.victoryGame.some((_vg) => _vg === ''));
                 const randomStep = minStatusRating.find((TopRt) => TopRt.victoryGame.some((_vg) => _vg === ''));
 
-                maxStatusRating.length > 0 ?
-                    topRating ? goToSentLogic(topRating) : goToSentLogic(randomStep)
-                    : goToSentLogic(randomStep);
+                console.log(topRating, 'topRating')
+                console.log(randomStep, 'randomStep')
+
+                if(maxStatusRating.length > 0){
+                    if(topRating){
+                        goToSentLogic(topRating)
+                    } else {
+                        goToSentLogic(randomStep)
+                    }
+                } else {
+                    goToSentLogic(randomStep)
+                }
+
+                // maxStatusRating.length > 0 ?
+                //     topRating ? goToSentLogic(topRating) : goToSentLogic(randomStep)
+                //     : goToSentLogic(randomStep);
 
                 victoryGame();
                 updateMatrix(startGame);
@@ -139,8 +236,6 @@ function goToSentLogic(randomStep) {
                 break;
             }
         }
-    } else {
-
     }
 }
 
